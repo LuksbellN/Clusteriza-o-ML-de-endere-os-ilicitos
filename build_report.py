@@ -265,7 +265,7 @@ def build():
         '<link href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html">'
         'scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html</link>.<br/>'
         '[3] Enunciado “(P1) Clusterização (ML) de endereços ilícitos” e '
-        'ExercCluster.tgz fornecidos pela disciplina. Documentação consultada em 11/11/2026.',7.3)
+        'ExercCluster.tgz fornecidos pela disciplina.',7.3)
     r.bottoms[r.page]=r.y;r.c.save()
     assert r.page==6
     writer=PdfWriter();writer.append(PdfReader(stream))
