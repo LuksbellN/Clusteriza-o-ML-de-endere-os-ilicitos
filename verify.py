@@ -1,10 +1,8 @@
 """Reconferência independente dos CSVs diretamente no arquivo fornecido."""
 import csv
 import hashlib
-import io
 import json
 import tarfile
-import zipfile
 from itertools import combinations
 from pathlib import Path
 
@@ -101,12 +99,10 @@ def verify():
         repo='https://github.com/LuksbellN/Clusteriza-o-ML-de-endere-os-ilicitos'
         for page in [reader.pages[0],reader.pages[-1]]:
             assert any(a.get_object().get('/A',{}).get('/URI')==repo for a in page.get('/Annots',[]))
-        assert 'Clusterizacao_ML_reproducao.zip' in reader.attachments
-        with zipfile.ZipFile(io.BytesIO(reader.attachments['Clusterizacao_ML_reproducao.zip'][0])) as z:
-            assert all(f in z.namelist() for f in ['analyze.py','build_report.py','verify.py','README.md','results/addresses.csv'])
-            for name in z.namelist():
-                if name!='results/verification.json':assert z.read(name)==(ROOT/name).read_bytes(),name
-        report.update(pdf_pages=6,pdf_text_checked=True,pdf_attachment_checked=True)
+        assert not reader.attachments
+        assert 'Clusterizacao_ML_reproducao.zip' not in text
+        assert not any(a.get_object().get('/Subtype')=='/FileAttachment' for p in reader.pages for a in p.get('/Annots',[]))
+        report.update(pdf_pages=6,pdf_text_checked=True,pdf_attachments=0)
     (out/'verification.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     print(json.dumps(report,indent=2))
 

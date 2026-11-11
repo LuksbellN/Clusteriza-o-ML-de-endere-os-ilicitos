@@ -2,7 +2,6 @@
 import csv
 import io
 import json
-import zipfile
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -211,7 +210,7 @@ def build():
         '<b>não representa necessariamente pagamento entre os dois endereços</b>.')
     r.image('graph.png',186)
     r.p('IDs A01-A38 correspondem aos endereços completos em results/addresses.csv, '
-        'incorporado no anexo do PDF. Cores: C1 azul, C2 laranja, C3 verde.',7.8)
+        'gerado pelo código da análise. Cores: C1 azul, C2 laranja, C3 verde.',7.8)
     r.table([['Arestas','Componentes','Nós isolados','Maior componente'],[6,33,29,'3 endereços']],size=9)
     r.p('Há quatro arestas dentro de C2, uma dentro de C3 e uma entre C2 e C3. '
         'C1 não possui arestas. Os seis pares surgem de quatro transações '
@@ -252,13 +251,10 @@ def build():
         'classificados como ilícitos. Também não há dados para identificar '
         'vítimas, confirmar autoria ou calcular quanto foi obtido com extorsão.')
     r.p('Como repetir a análise',11,'Bold')
-    r.p(f'Código, resultados e instruções: <link href="{REPO}">{REPO}</link>.',8.2)
-    r.p('O PDF contém o anexo <b>Clusterizacao_ML_reproducao.zip</b>, com '
-        'os scripts, as instruções, as tabelas e as figuras. Para reproduzir, '
-        'é necessário ter Python e o ExercCluster.tgz original. Após instalar '
-        'requirements.txt, executar analyze.py, build_report.py e verify.py. '
-        'Alguns leitores de navegador não mostram anexos; um leitor com suporte '
-        'a anexos permite extrair o ZIP.',8.8)
+    r.p(f'Código e instruções: <link href="{REPO}">{REPO}</link>.',8.2)
+    r.p('Para reproduzir, é necessário ter Python e o ExercCluster.tgz original. '
+        'Após instalar requirements.txt, executar analyze.py, build_report.py e '
+        'verify.py. As tabelas e figuras são geradas na pasta results/.',8.8)
     r.p('SHA-256 do ExercCluster.tgz:',8,'Bold')
     r.p(s['archive_sha256'][:32]+'<br/>'+s['archive_sha256'][32:],7.8,'Mono')
     r.p('Referências',10.5,'Bold')
@@ -272,19 +268,12 @@ def build():
         'ExercCluster.tgz fornecidos pela disciplina. Documentação consultada em 11/11/2026.',7.3)
     r.bottoms[r.page]=r.y;r.c.save()
     assert r.page==6
-    payload=io.BytesIO()
-    with zipfile.ZipFile(payload,'w',zipfile.ZIP_DEFLATED) as z:
-        for file in sorted(ROOT.iterdir()):
-            if file.suffix in ['.py','.txt','.md']:z.write(file,file.name)
-        for file in sorted(OUT.rglob('*')):
-            if file.is_file() and file.suffix in ['.csv','.json','.png']:z.write(file,str(file.relative_to(ROOT)))
     writer=PdfWriter();writer.append(PdfReader(stream))
-    writer.add_attachment('Clusterizacao_ML_reproducao.zip',payload.getvalue())
     writer.add_metadata({'/Title':'Clusterização (ML) de endereços ilícitos - Sextortion',
                          '/Author':'Lucas Panonko Assis Belchior','/Subject':'ESP_SEC - (P1) - K-Means, DBSCAN, grafo e finanças'})
     dest=ROOT/'report/Clusterizacao_ML_Lucas_Belchior.pdf';dest.parent.mkdir(exist_ok=True)
     with dest.open('wb') as f:writer.write(f)
-    print(json.dumps(dict(pdf=str(dest),pages=r.page,bottoms=r.bottoms,attachment_bytes=len(payload.getvalue())),indent=2))
+    print(json.dumps(dict(pdf=str(dest),pages=r.page,bottoms=r.bottoms,attachments=0),indent=2))
 
 
 if __name__=='__main__':build()

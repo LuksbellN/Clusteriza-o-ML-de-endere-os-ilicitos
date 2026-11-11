@@ -10,7 +10,7 @@ Repositório: [Clusterização (ML) de endereços ilícitos](https://github.com/
 
 Agrupar os endereços do arquivo fornecido usando K-Means e DBSCAN. Comparar os grupos pelas movimentações financeiras e pelo grafo das transações, conforme o enunciado.
 
-O relatório está em `report/Clusterizacao_ML_Lucas_Belchior.pdf`. Tem seis páginas, incluindo a capa. O PDF também contém um ZIP com o código e os resultados; alguns leitores de navegador não mostram anexos.
+O relatório está em `report/Clusterizacao_ML_Lucas_Belchior.pdf`. Tem seis páginas, incluindo a capa, e links para este repositório. O PDF não contém arquivos anexados.
 
 Este repositório publica apenas o código e as instruções. As pastas `results/` e `report/` são geradas localmente pelos scripts e não são versionadas. O arquivo original deve ser obtido com a disciplina.
 
@@ -32,8 +32,8 @@ No Windows, use o caminho de um interpretador instalado se o comando `python` ab
 ## O que cada script faz
 
 - `analyze.py`: lê os JSONs, remove transações repetidas, calcula as medidas de cada endereço, executa os modelos e salva tabelas e gráficos.
-- `build_report.py`: monta o PDF com os resultados e incorpora o ZIP com os arquivos de reprodução.
-- `verify.py`: reabre o dataset, confere contagens, valores, taxas e conexões. Também recalcula os modelos e verifica se o PDF e seu anexo correspondem aos arquivos atuais.
+- `build_report.py`: monta o PDF com os resultados e o link do repositório.
+- `verify.py`: reabre o dataset, confere contagens, valores, taxas e conexões. Também recalcula os modelos, confere o texto e os links do PDF e verifica a ausência de anexos.
 
 O código usa bibliotecas prontas para os algoritmos e os gráficos. Não há implementação própria de K-Means ou DBSCAN. A geração do PDF fica separada da análise.
 
@@ -82,7 +82,7 @@ A indicação de sextortion vem do enunciado. Os demais endereços encontrados n
 - `verification.json`: resultado das conferências.
 - `figures/`: os quatro gráficos do relatório.
 
-O arquivo original não é modificado nem incluído no ZIP. SHA-256: `ef60f142a9faec08a99f403966d8c513a5c0da7ca4b310132db62c905823a69c`.
+O arquivo original não é modificado nem publicado no repositório. SHA-256: `ef60f142a9faec08a99f403966d8c513a5c0da7ca4b310132db62c905823a69c`.
 
 ## Roteiro sugerido para estudar e apresentar
 
